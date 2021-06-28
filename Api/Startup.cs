@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
+using Core.Interfaces;
 
 namespace Api
 {
@@ -30,6 +31,7 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IRepositoryProduct,RepositoryProduct>();
             services.AddDbContext<StoreContext>(opt=>{
                 opt.UseSqlServer(_config.GetConnectionString("Default"));
             }
