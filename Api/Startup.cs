@@ -32,6 +32,7 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IRepositoryProduct,RepositoryProduct>();
+            services.AddScoped(typeof(IGenericRepo<>),typeof(GenericRepo<>));
             services.AddDbContext<StoreContext>(opt=>{
                 opt.UseSqlServer(_config.GetConnectionString("Default"));
             }
