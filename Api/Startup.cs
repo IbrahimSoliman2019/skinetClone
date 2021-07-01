@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
 using Core.Interfaces;
+using Api.DTOS;
 
 namespace Api
 {
@@ -26,14 +27,16 @@ namespace Api
             _config = config;
         }
 
-        
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IRepositoryProduct,RepositoryProduct>();
-            services.AddScoped(typeof(IGenericRepo<>),typeof(GenericRepo<>));
-            services.AddDbContext<StoreContext>(opt=>{
+            services.AddScoped<IRepositoryProduct, RepositoryProduct>();
+            services.AddAutoMapper(typeof(ProductToReturnDTO));
+            services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
+            services.AddDbContext<StoreContext>(opt =>
+            {
                 opt.UseSqlServer(_config.GetConnectionString("Default"));
             }
 
@@ -58,7 +61,7 @@ namespace Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseStaticFiles();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
