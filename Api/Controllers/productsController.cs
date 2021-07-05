@@ -1,18 +1,21 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.DTOS;
+using Api.Errors;
+using Api.Helpers;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers
 {
-    [Route("api/[Controller]")]
-    public class ProductsController : ControllerBase
+   
+    public class ProductsController : BaseApiController
     {
         private readonly IGenericRepo<Product> productrepo;
         private readonly IGenericRepo<ProductBrand> productBrandRepo;
@@ -29,18 +32,25 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToReturnDTO>>> GetProducts()
+        public async Task<ActionResult<Pagination<ProductToReturnDTO>>> GetProducts(
+            [FromQuery]ProductSpecParams ProductParams)
         {
-            var spec = new ProductWithBrandsandTypesspecification();
+            var spec = new ProductWithBrandsandTypesspecification(ProductParams);
+            var countspec = new ProductWithFiltersForCountSpecification(ProductParams);
+            var totalitems = await productrepo.CountAsync(countspec);
             var products = await productrepo.ListAllBySpec(spec);
-            return Ok(mapper.Map<IReadOnlyList<Product>,List<ProductToReturnDTO>>(products));
+            var data = mapper.Map<IReadOnlyList<Product>,List<ProductToReturnDTO>>(products);
+            return Ok(new Pagination<ProductToReturnDTO>(ProductParams.PageIndex,ProductParams.PageSize,totalitems,data));
         }
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductToReturnDTO>> GetProduct(int id)
         {
             var spec = new ProductWithBrandsandTypesspecification(id);
 
             var product = await productrepo.GetBySpec(spec);
+            if(product==null) return NotFound(new ApiResponse(404));
             return mapper.Map<Product,ProductToReturnDTO>(product);
         }
         [HttpGet("brands")]
