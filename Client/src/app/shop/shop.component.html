@@ -1,1 +1,80 @@
-<p>shop works!</p>
+<div class="container">
+  <div class="row">
+    <section class="col-3">
+      <h5 class="text-warning ml-3">Sort</h5>
+      <select
+        name=""
+        id=""
+        class="custom-select my-3"
+        (change)="OnSortedSelected($event.target.value)"
+      >
+        <option value="" *ngFor="let s of Sortoptions" [value]="s.value">
+          {{ s.name }}
+        </option>
+      </select>
+
+      <h5 class="text-warning ml-3">Brands</h5>
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let brand of Brands"
+          [class.active]="brand.id == this.shopparams.brandid"
+          [value]="brand.id"
+          (click)="OnBrandSelected(brand.id)"
+        >
+          {{ brand.id }}-
+          {{ brand.name }}
+        </li>
+      </ul>
+      <h5 class="text-warning ml-3">Types</h5>
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let type of Types"
+          [class.active]="type.id == this.shopparams.typeid"
+          [value]="type.id"
+          (click)="OnBrandSelected(type.id)"
+        >
+          {{ type.name }}
+        </li>
+      </ul>
+    </section>
+    <section class="col-9">
+      <div class="album py-5 bg-light">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center pb-2">
+            <app-pagin-header
+              [totalCount]="this.totalCount"
+              [PageNumber]="this.shopparams.PageNumber"
+              [PageSize]="this.shopparams.PageSize"
+            ></app-pagin-header>
+            <div class="form-group mt-2">
+              <input
+                type="text"
+                style="width: 300px"
+                name="Search"
+                placeholder="Search"
+                (keyup.enter)="OnSearch()"
+                id=""
+                #search
+                class="formcontrol mr-2"
+              />
+              <button (click)="OnSearch()" class="btn btn-outline-primary my-2">Search</button>
+              <button (click)="OnReset()" class="btn btn-outline-success my-2">Reset</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 mb-4" *ngFor="let product of products">
+              <app-product-item [product]="product"></app-product-item>
+            </div>
+        <app-pager
+        [totalCount]="totalCount"
+        [pageSize]="shopparams.PageSize"
+        (pageChanged)="OnPageChanged($event)"
+        ></app-pager>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

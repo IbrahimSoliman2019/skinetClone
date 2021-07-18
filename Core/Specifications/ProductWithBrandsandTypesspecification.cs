@@ -16,7 +16,7 @@ namespace Core.Specifications
              AddOrderBy(x=>x.Name);
              ApplyPaging(ProductParams.PageSize*(ProductParams.PageIndex-1),ProductParams.PageSize);
              switch(ProductParams.sort){
-                 case "priceAcs":
+                 case "priceAsc":
                  AddOrderBy(x=>x.Price);
                  break;
                  case "priceDesc":
