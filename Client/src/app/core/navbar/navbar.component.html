@@ -1,13 +1,14 @@
 <div class="d-flex flex-column flex-md-row align-items-center justify-content-between fixed-top pb-3 mb-4 border-bottom">
     <a href="/" class="d-flex align-items-center text-dark text-decoration-none ">
-<img src="" alt="" style="max-height: 70px;">
-        <span class="fs-4">Pricing example</span>
+<img src="../../../assets/images/logo.png" alt="" style="max-height: 70px;" routerLink="/">
     </a>
 
     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto text-uppercase" style="font-size: larger;">
-      <a class="me-3 mr-2 py-2 text-dark text-decoration-none" href="#">Home</a>
-      <a class="me-3 mr-2 py-2 text-dark text-decoration-none" href="#">Shop</a>
-      <a class="me-3 mr-2 py-2 text-dark text-decoration-none" href="#">Contact</a>
+      <a class="me-3 mr-2 py-2 text-dark text-decoration-none" routerLink="/" routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact:true}"
+      >Home</a>
+      <a class="me-3 mr-2 py-2 text-dark text-decoration-none" routerLink="/shop" routerLinkActive="active" >Shop</a>
+      <a class="me-3 mr-2 py-2 text-dark text-decoration-none" routerLink="/test-error" routerLinkActive="active" >Test-Errors</a>
     </nav>
     <div class="d-flex align-items-center">
         <a class="position-relative mr-5" style="position: relative;">

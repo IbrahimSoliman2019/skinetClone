@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +9,7 @@ import {CoreModule} from './core/core.module';
 import {ShopModule} from './shop/shop.module';
 import { ProductItemComponent } from './product-item/product-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ErrorInterceptorService} from './core/Interceptors/error-interceptor.service';
 
 
 
@@ -26,10 +27,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     HttpClientModule,
     CoreModule,
-    ShopModule,
+    
   
   ],
-  providers: [],
+  providers: [
+    {provide:HTTP_INTERCEPTORS,useClass:ErrorInterceptorService,multi:true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
